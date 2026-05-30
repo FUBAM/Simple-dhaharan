@@ -61,3 +61,5 @@ provider
 dio
 shared_preferences
 image_picker
+
+Database Insert Values ato Seeder mysql ada dua bebas mau yang v1/v2
