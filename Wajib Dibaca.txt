@@ -23,7 +23,6 @@ Fitur:
 - lihat semua recipes (termasuk private)
 - deactivate user
 - delete recipe siapa pun
-- delete comment siapa pun
 - buat kateogori
 - crud resep (judul, deskripsi, waktu memasak, porsi, pengeluaran masak, mengandung babi, mengandung alkohol, bahan bahan, langkah memasak, pilih kategori)
 - mengkonfirmasi resep user
