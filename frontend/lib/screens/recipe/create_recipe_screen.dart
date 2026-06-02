@@ -577,6 +577,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
       "steps": stepsJson,
     };
     try {
+      print('========== UPDATE PAYLOAD ==========');
       print(payload);
 
       if (isEdit) {

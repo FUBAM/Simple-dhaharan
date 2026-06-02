@@ -9,6 +9,10 @@ import '../models/category_model.dart';
 
 import '../services/upload_service.dart';
 
+import '../models/admin_recipe_model.dart';
+
+import '../services/api_service.dart';
+
 class RecipeProvider extends ChangeNotifier {
   final RecipeService _service = RecipeService();
 
@@ -17,6 +21,7 @@ class RecipeProvider extends ChangeNotifier {
   List<RecipeModel> recipes = [];
   List<MyRecipeModel> myRecipes = [];
   List<CategoryModel> categories = [];
+  List<AdminRecipeModel> pendingRecipes = [];
 
   RecipeDetailModel? selectedRecipe;
 
@@ -111,5 +116,37 @@ class RecipeProvider extends ChangeNotifier {
 
   Future<void> updateRecipe(int recipeId, Map<String, dynamic> data) async {
     await _service.updateRecipe(recipeId, data);
+  }
+  
+  Future<void> loadPendingRecipes() async {
+    try {
+      final response = await _service.getPendingRecipes();
+
+      print('ADMIN RESPONSE');
+      print(response.data);
+
+      pendingRecipes = (response.data as List)
+          .map((e) => AdminRecipeModel.fromJson(e))
+          .toList();
+
+      print('PENDING COUNT: ${pendingRecipes.length}');
+
+      notifyListeners();
+    } catch (e) {
+      print('ADMIN ERROR');
+      print(e);
+    }
+  }
+
+  Future<void> approveRecipe(int recipeId) async {
+    await _service.approveRecipe(recipeId);
+
+    await loadPendingRecipes();
+  }
+
+  Future<void> rejectRecipe(int recipeId) async {
+    await _service.rejectRecipe(recipeId);
+
+    await loadPendingRecipes();
   }
 }

@@ -6,64 +6,50 @@ import '../../providers/auth_provider.dart';
 import '../home/home_screen.dart';
 import '../login/login_screen.dart';
 
+import '../admin/admin_screen.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() =>
-      _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState
-    extends State<SplashScreen> {
-
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-
     super.initState();
 
     Future.microtask(() async {
-
-      final auth =
-          context.read<AuthProvider>();
+      final auth = context.read<AuthProvider>();
 
       await auth.autoLogin();
 
       if (!mounted) return;
 
       if (auth.isLoggedIn) {
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) =>
-                const HomeScreen(),
-          ),
-        );
-
+        if (auth.user?.role == 'admin') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const AdminScreen()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const HomeScreen()),
+          );
+        }
       } else {
-
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (_) =>
-                const LoginScreen(),
-          ),
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
         );
-
       }
     });
   }
 
   @override
-  Widget build(
-      BuildContext context) {
-
-    return const Scaffold(
-      body: Center(
-        child:
-            CircularProgressIndicator(),
-      ),
-    );
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

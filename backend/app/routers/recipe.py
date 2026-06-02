@@ -388,42 +388,43 @@ def update_recipe(
 
             ingredient = Ingredient(
                 group_id=group.id,
-
                 name=ingredient_data.name,
                 quantity=ingredient_data.quantity,
                 unit=ingredient_data.unit,
-
                 sort_order=ingredient_data.sort_order
             )
 
             db.add(ingredient)
 
-            for step_data in request.steps:
+    db.commit()
 
-                step = RecipeStep(
-                recipe_id=recipe.id,
 
-                step_number=step_data.step_number,
-                instruction=step_data.instruction
-                )
+    for step_data in request.steps:
 
-                db.add(step)
-                db.commit()
-                db.refresh(step)
+        step = RecipeStep(
+            recipe_id=recipe.id,
+            step_number=step_data.step_number,
+            instruction=step_data.instruction
+        )
 
-            for image_data in step_data.images:
+        db.add(step)
+        db.commit()
+        db.refresh(step)
 
-                image = RecipeStepImage(
-                    step_id=step.id,
-                    image_url=image_data.image_url,
-                    sort_order=image_data.sort_order
-                )
+        for image_data in step_data.images:
 
-                db.add(image)
+            image = RecipeStepImage(
+                step_id=step.id,
+                image_url=image_data.image_url,
+                sort_order=image_data.sort_order
+            )
 
-                db.commit()
+            db.add(image)
 
-            return {
+        db.commit()
+
+
+    return {
         "message": "Recipe updated"
     }
 
@@ -465,6 +466,29 @@ def admin_all_recipes(
 ):
 
     recipes = db.query(Recipe).all()
+
+    result = []
+
+    for recipe in recipes:
+
+        result.append({
+            "id": recipe.id,
+            "title": recipe.title,
+            "status": recipe.status,
+            "user_id": recipe.user_id
+        })
+
+    return result
+
+@router.get("/admin/pending")
+def admin_pending_recipes(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only)
+):
+
+    recipes = db.query(Recipe).filter(
+        Recipe.status == "pending"
+    ).all()
 
     result = []
 

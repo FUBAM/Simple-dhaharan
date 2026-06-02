@@ -40,4 +40,16 @@ class RecipeService {
   Future<Response> updateRecipe(int recipeId, Map<String, dynamic> data) async {
     return await ApiService.dio.put('/recipes/$recipeId', data: data);
   }
+
+  Future<Response> getPendingRecipes() async {
+    return await ApiService.dio.get('/recipes/admin/pending');
+  }
+
+  Future<Response> approveRecipe(int recipeId) async {
+    return await ApiService.dio.put('/recipes/admin/$recipeId/approve');
+  }
+
+  Future<Response> rejectRecipe(int recipeId) async {
+    return await ApiService.dio.put('/recipes/admin/$recipeId/reject');
+  }
 }
