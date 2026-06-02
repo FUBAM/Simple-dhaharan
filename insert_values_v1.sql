@@ -24,9 +24,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- Password hash menggunakan contoh bcrypt standard ('password123')
 -- =========================
 INSERT INTO users (id, NAME, email, password_hash, phone, bio, ROLE, is_active) VALUES
-(1, 'Admin Dhaharan', 'admin@dhaharan.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '081100001111', 'Administrator resmi Dhaharan. Pencinta segala jenis kuliner nusantara.', 'admin', TRUE),
-(2, 'Chef Budi Nusantara', 'budi@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '081233334444', 'Mantan chef hotel yang kini gemar berbagi resep rumahan yang lezat dan mudah.', 'user', TRUE),
-(3, 'Ibu Siti Khadijah', 'siti.masak@yahoo.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '081566667777', 'Ibu rumah tangga dengan 3 anak. Resep andalan keluarga turun-temurun.', 'user', TRUE);
+(1, 'Admin Dhaharan', 'admin@dhaharan.com', '$2b$12$uvS7PGwE7oEv4s2XhRM9wes4UwKvEOc8.bJ2O0cODU4jPacSj4yuy', '081100001111', 'Administrator resmi Dhaharan. Pencinta segala jenis kuliner nusantara.', 'admin', TRUE),
+(2, 'Chef Budi Nusantara', 'budi@gmail.com', '$2b$12$uvS7PGwE7oEv4s2XhRM9wes4UwKvEOc8.bJ2O0cODU4jPacSj4yuy', '081233334444', 'Mantan chef hotel yang kini gemar berbagi resep rumahan yang lezat dan mudah.', 'user', TRUE),
+(3, 'Ibu Siti Khadijah', 'siti.masak@yahoo.com', '$2b$12$uvS7PGwE7oEv4s2XhRM9wes4UwKvEOc8.bJ2O0cODU4jPacSj4yuy', '081566667777', 'Ibu rumah tangga dengan 3 anak. Resep andalan keluarga turun-temurun.', 'user', TRUE);
 
 -- =========================
 -- 2. SEED CATEGORIES (12 Kategori)

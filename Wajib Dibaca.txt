@@ -37,24 +37,20 @@ Fitur:
 - crud resep (judul, cover/gambar hidangan, deskripsi, waktu memasak, porsi, pengeluaran masak, mengandung babi, mengandung alkohol, bahan bahan, langkah memasak, pilih kategori)
 - submit resep untuk di approve admin
 - upload resep (pending -> public/rejected) atau simpan (private)
-- comment resep orang lain
-- sukai resep orang lain
-- simpan resep orang lain
-- beri catatan pribadi di resep orang lain
 - hapus akun (deactivate)
 
 Tampilan Aplikasi:
 - Home (halaman utama yang berisi resep resep public, hanya bisa melihat resep card dan detail saja, dan kategori yang jika dipencet akan masuk halaman kategori yang diinginkan) (detail ini berisi informasi resep lengkap bahan serta langkah memasaknya)
 - Register
-- Login (jika mau crud, menyimpan, komen, dan sukai resep harus login terlebih dahulu)
+- Login (jika mau crud resep harus login terlebih dahulu)
 - Membuat Resep
 - Detail Resep
-- Profil (berisi resep yang sudah dibuat, resep yang disimpan, resep yang disukai, pengaturan, edit profil)
+- Profil (berisi resep yang sudah dibuat, pengaturan, edit profil)
 - ResepKu (berisi tombol untuk mulai buat resep, daftar resep pribadi, daftar resep yang sedang pending, daftar resep yang di public, dan daftar resep yang ditolak)
 - Search Bar (ada di Home, ketika di klik masuk ke halaman pencarian, ketika sudah memasukkan keyword dan enter akan muncul resep terkait dan ada filter resep)
 - Filter (ada di halaman pencarian, berdasarkan porsi, waktu memasak, dan sorting berdasarkan waktu ascend atau descend)
 - Navbar bawah (berisi Home, ResepKu, dan Profil)
-- Pengaturan (ada di Profil, berisi update informasi akun, tentang kami, hapus akun (deactivate), dan logout)
+- Pengaturan (ada di pojok atas Profil, berisi update informasi akun, tentang kami, hapus akun (deactivate), dan logout)
 
 Flutter Dependencies:
 provider
