@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 -- =========================
 -- SEED USERS (1 Admin, 2 User)
--- Password hash menggunakan ('password')
+-- Password hash menggunakan ('password123')
 -- =========================
 INSERT INTO users
 (

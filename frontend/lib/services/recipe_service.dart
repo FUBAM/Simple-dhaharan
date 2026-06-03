@@ -1,10 +1,26 @@
 import 'package:dio/dio.dart';
-
 import 'api_service.dart';
 
 class RecipeService {
   Future<Response> getRecipes() async {
-    return await ApiService.dio.get('/recipes');
+    return await ApiService.dio.get('/recipes/');
+  }
+
+  // FUNGSI BARU: Untuk pencarian dan filter
+  Future<Response> searchRecipes({
+    String? query,
+    int? maxTime,
+    int? servings,
+    String? sort,
+  }) async {
+    final Map<String, dynamic> queryParams = {};
+    
+    if (query != null && query.isNotEmpty) queryParams['q'] = query;
+    if (maxTime != null) queryParams['max_time'] = maxTime;
+    if (servings != null) queryParams['servings'] = servings;
+    if (sort != null) queryParams['sort'] = sort;
+
+    return await ApiService.dio.get('/recipes/', queryParameters: queryParams);
   }
 
   Future<Response> getRecipeDetail(int recipeId) async {
@@ -19,17 +35,10 @@ class RecipeService {
     return await ApiService.dio.get('/categories');
   }
 
-  // Future<Response> createRecipe(Map<String, dynamic> data) async {
-  //   return await ApiService.dio.post('/recipes/', data: data);
-  // }
-
   Future<Response> createRecipe(Map<String, dynamic> data) async {
     print("POST RECIPE");
-
     final response = await ApiService.dio.post('/recipes/', data: data);
-
     print(response.data);
-
     return response;
   }
 
@@ -51,5 +60,17 @@ class RecipeService {
 
   Future<Response> rejectRecipe(int recipeId) async {
     return await ApiService.dio.put('/recipes/admin/$recipeId/reject');
+  }
+
+  Future<Response> deleteRecipe(int recipeId) async {
+    return await ApiService.dio.delete('/recipes/$recipeId');
+  }
+
+  Future<Response> getAdminStatistics() async {
+    return await ApiService.dio.get('/recipes/admin/statistics');
+  }
+
+  Future<Response> getMyRecipeDetail(int recipeId) async {
+    return await ApiService.dio.get('/recipes/my-recipes/$recipeId');
   }
 }

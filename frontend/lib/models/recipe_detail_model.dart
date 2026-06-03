@@ -1,6 +1,7 @@
 class RecipeDetailModel {
-
   final int id;
+
+  final int? userId;
 
   final int? categoryId;
 
@@ -28,6 +29,7 @@ class RecipeDetailModel {
 
   RecipeDetailModel({
     required this.id,
+    this.userId,
     this.categoryId,
     required this.title,
     this.description,
@@ -42,51 +44,35 @@ class RecipeDetailModel {
     required this.steps,
   });
 
-  factory RecipeDetailModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
-
+  factory RecipeDetailModel.fromJson(Map<String, dynamic> json) {
     return RecipeDetailModel(
       id: json['id'],
 
-      categoryId:
-          json['category_id'],
+      userId: json['user_id'],
 
-      title:
-          json['title'] ?? '',
+      categoryId: json['category_id'],
 
-      description:
-          json['description'],
+      title: json['title'] ?? '',
 
-      cookTime:
-          json['cook_time'],
+      description: json['description'],
 
-      servings:
-          json['servings'],
+      cookTime: json['cook_time'],
 
-      estimatedCost:
-          json['estimated_cost'],
+      servings: json['servings'],
 
-      containsPork:
-          json['contains_pork']
-              ?? false,
+      estimatedCost: json['estimated_cost'],
 
-      containsAlcohol:
-          json['contains_alcohol']
-              ?? false,
+      containsPork: json['contains_pork'] ?? false,
 
-      coverImage:
-          json['cover_image'],
+      containsAlcohol: json['contains_alcohol'] ?? false,
 
-      status:
-          json['status'],
+      coverImage: json['cover_image'],
 
-      ingredientGroups:
-          json['ingredient_groups']
-              ?? [],
+      status: json['status'],
 
-      steps:
-          json['steps'] ?? [],
+      ingredientGroups: json['ingredient_groups'] ?? [],
+
+      steps: json['steps'] ?? [],
     );
   }
 }

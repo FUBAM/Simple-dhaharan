@@ -12,6 +12,7 @@ from app.dependencies import admin_only
 from app.models.user import User
 
 from fastapi import Depends
+from app.routers import users
 
 app = FastAPI()
 
@@ -19,6 +20,10 @@ app.mount(
     "/uploads",
     StaticFiles(directory="uploads"),
     name="uploads"
+)
+
+app.include_router(
+    users.router
 )
 app.include_router(auth_router)
 app.include_router(recipe_router)

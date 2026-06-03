@@ -50,6 +50,7 @@ Tampilan Aplikasi:
 - Filter (ada di halaman pencarian, berdasarkan porsi, waktu memasak, dan sorting berdasarkan waktu ascend atau descend)
 - Navbar bawah (berisi Home, ResepKu, dan Profil)
 - Pengaturan (ada di pojok atas Profil, berisi update informasi akun, tentang kami, hapus akun (deactivate), dan logout)
+- di admin dashboard ada dua halaman utama yaitu Home berisi statistik, dan pending recipes. Recipe berisi crud recipe. untuk statistik bagian total user, total recipes, rejected bisa diklik dan masuk ke screen mereka.
 
 Flutter Dependencies:
 provider

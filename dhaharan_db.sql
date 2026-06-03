@@ -4,7 +4,7 @@ USE dhaharan_db;
 
 -- =========================
 -- USERS
--- =========================
+-- ==============A===========
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -190,7 +190,7 @@ ON recipe_steps(recipe_id);
 -- RECIPE STEP IMAGES
 -- =========================
 
-CREATE TABLE  (
+CREATE TABLE  recipe_step_images (
     id INT PRIMARY KEY AUTO_INCREMENT,
 
     step_id INT NOT NULL,

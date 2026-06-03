@@ -2,6 +2,8 @@ class RecipeModel {
 
   final int id;
 
+  final int? userId;
+
   final String title;
 
   final String? description;
@@ -19,6 +21,7 @@ class RecipeModel {
     this.coverImage,
     this.cookTime,
     this.servings,
+    this.userId,
   });
 
   factory RecipeModel.fromJson(
@@ -32,6 +35,7 @@ class RecipeModel {
       coverImage: json['cover_image'],
       cookTime: json['cook_time'],
       servings: json['servings'],
+      userId: json['user_id'],
     );
   }
 }

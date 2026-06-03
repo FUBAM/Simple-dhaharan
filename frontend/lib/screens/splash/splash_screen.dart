@@ -4,9 +4,10 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
 import '../home/home_screen.dart';
-import '../login/login_screen.dart';
 
 import '../admin/admin_screen.dart';
+
+import '../main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -36,13 +37,13 @@ class _SplashScreenState extends State<SplashScreen> {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const HomeScreen()),
+            MaterialPageRoute(builder: (_) => const MainScreen()),
           );
         }
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
+          MaterialPageRoute(builder: (_) => const MainScreen()),
         );
       }
     });
