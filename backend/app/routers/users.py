@@ -16,11 +16,11 @@ from fastapi import (
     HTTPException
 )
 
-from schemas.user import (
+from app.schemas.user import (
     UpdateAccountRequest
 )
 
-from utils.security import (
+from app.utils.security import (
     verify_password,
     hash_password
 )
