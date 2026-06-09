@@ -14,7 +14,7 @@ class RecipeService {
     String? sort,
   }) async {
     final Map<String, dynamic> queryParams = {};
-    
+
     if (query != null && query.isNotEmpty) queryParams['q'] = query;
     if (maxTime != null) queryParams['max_time'] = maxTime;
     if (servings != null) queryParams['servings'] = servings;
@@ -72,5 +72,13 @@ class RecipeService {
 
   Future<Response> getMyRecipeDetail(int recipeId) async {
     return await ApiService.dio.get('/recipes/my-recipes/$recipeId');
+  }
+
+  Future<Response> getAdminRecipeDetail(int recipeId) async {
+    return await ApiService.dio.get('/recipes/admin/detail/$recipeId');
+  }
+
+  Future<Response> getRejectedRecipes() async {
+    return await ApiService.dio.get('/recipes/admin/rejected');
   }
 }

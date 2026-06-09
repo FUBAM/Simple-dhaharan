@@ -17,69 +17,61 @@ class RecipeProvider extends ChangeNotifier {
   List<MyRecipeModel> myRecipes = [];
   List<CategoryModel> categories = [];
   List<AdminRecipeModel> pendingRecipes = [];
-  
-  // STATE BARU UNTUK SEARCH
-  List<RecipeModel> searchResults = [];
-  bool isSearching = false;
+  List<AdminRecipeModel> rejectedRecipes = [];
 
   AdminStatisticsModel? adminStatistics;
   RecipeDetailModel? selectedRecipe;
 
+  // STATE BARU UNTUK SEARCH
+  List<RecipeModel> searchResults = [];
+  bool isSearching = false;
+
   bool isLoading = false;
   String? coverImageUrl;
+  String? errorMessage; // FUNGSI BARU: Menyimpan pesan error dari API
 
   Future<void> loadRecipes() async {
     try {
       isLoading = true;
       notifyListeners();
       final response = await _service.getRecipes();
-      recipes = (response.data as List).map((e) => RecipeModel.fromJson(e)).toList();
+      recipes = (response.data as List)
+          .map((e) => RecipeModel.fromJson(e))
+          .toList();
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 
-  // FUNGSI BARU: Mengeksekusi pencarian
-  Future<void> searchRecipes({
-    String? query,
-    int? maxTime,
-    int? servings,
-    String? sort,
-  }) async {
-    try {
-      isSearching = true;
-      notifyListeners();
-
-      final response = await _service.searchRecipes(
-        query: query,
-        maxTime: maxTime,
-        servings: servings,
-        sort: sort,
-      );
-
-      searchResults = (response.data as List).map((e) => RecipeModel.fromJson(e)).toList();
-    } catch (e) {
-      print('SEARCH ERROR: $e');
-      searchResults = [];
-    } finally {
-      isSearching = false;
-      notifyListeners();
-    }
-  }
-
-  Future<void> clearSearch() async {
-    searchResults = [];
-    notifyListeners();
-  }
-
   Future<void> loadRecipeDetail(int recipeId) async {
     selectedRecipe = null;
+    errorMessage = null; // Reset error
     try {
       isLoading = true;
       notifyListeners();
       final response = await _service.getRecipeDetail(recipeId);
       selectedRecipe = RecipeDetailModel.fromJson(response.data);
+    } catch (e) {
+      print('ERROR LOAD DETAIL: $e');
+      errorMessage = e.toString(); // Tangkap error agar UI tahu
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadMyRecipeDetail(int recipeId) async {
+    selectedRecipe = null;
+    errorMessage = null; // Reset error
+    try {
+      isLoading = true;
+      notifyListeners();
+      final response = await _service.getMyRecipeDetail(recipeId);
+      selectedRecipe = RecipeDetailModel.fromJson(response.data);
+    } catch (e) {
+      print('ERROR LOAD MY DETAIL: $e');
+      errorMessage = e.toString();
     } finally {
       isLoading = false;
       notifyListeners();
@@ -91,7 +83,9 @@ class RecipeProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
       final response = await _service.getMyRecipes();
-      myRecipes = (response.data as List).map((e) => MyRecipeModel.fromJson(e)).toList();
+      myRecipes = (response.data as List)
+          .map((e) => MyRecipeModel.fromJson(e))
+          .toList();
     } finally {
       isLoading = false;
       notifyListeners();
@@ -100,7 +94,9 @@ class RecipeProvider extends ChangeNotifier {
 
   Future<void> loadCategories() async {
     final response = await _service.getCategories();
-    categories = (response.data as List).map((e) => CategoryModel.fromJson(e)).toList();
+    categories = (response.data as List)
+        .map((e) => CategoryModel.fromJson(e))
+        .toList();
     notifyListeners();
   }
 
@@ -137,10 +133,12 @@ class RecipeProvider extends ChangeNotifier {
   Future<void> loadPendingRecipes() async {
     try {
       final response = await _service.getPendingRecipes();
-      pendingRecipes = (response.data as List).map((e) => AdminRecipeModel.fromJson(e)).toList();
+      pendingRecipes = (response.data as List)
+          .map((e) => AdminRecipeModel.fromJson(e))
+          .toList();
       notifyListeners();
     } catch (e) {
-      print('ADMIN ERROR: $e');
+      print('ADMIN PENDING ERROR: $e');
     }
   }
 
@@ -170,18 +168,66 @@ class RecipeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadMyRecipeDetail(int recipeId) async {
+  Future<void> searchRecipes({
+    String? query,
+    int? maxTime,
+    int? servings,
+    String? sort,
+  }) async {
+    try {
+      isSearching = true;
+      notifyListeners();
+
+      final response = await _service.searchRecipes(
+        query: query,
+        maxTime: maxTime,
+        servings: servings,
+        sort: sort,
+      );
+
+      searchResults = (response.data as List)
+          .map((e) => RecipeModel.fromJson(e))
+          .toList();
+    } catch (e) {
+      print('SEARCH ERROR: $e');
+      searchResults = [];
+    } finally {
+      isSearching = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> clearSearch() async {
+    searchResults = [];
+    notifyListeners();
+  }
+
+  Future<void> loadAdminRecipeDetail(int recipeId) async {
     selectedRecipe = null;
+    errorMessage = null;
+
     try {
       isLoading = true;
       notifyListeners();
-      final response = await _service.getMyRecipeDetail(recipeId);
+
+      final response = await _service.getAdminRecipeDetail(recipeId);
+
       selectedRecipe = RecipeDetailModel.fromJson(response.data);
     } catch (e) {
-      print('DETAIL ERROR: $e');
+      errorMessage = e.toString();
     } finally {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> loadRejectedRecipes() async {
+    final response = await _service.getRejectedRecipes();
+
+    rejectedRecipes = (response.data as List)
+        .map((e) => AdminRecipeModel.fromJson(e))
+        .toList();
+
+    notifyListeners();
   }
 }

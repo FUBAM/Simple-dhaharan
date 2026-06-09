@@ -4,7 +4,7 @@ USE dhaharan_db;
 
 -- =========================
 -- USERS
--- ==============A===========
+-- =========================
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,

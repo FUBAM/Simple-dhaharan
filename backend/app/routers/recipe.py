@@ -325,7 +325,7 @@ def recipe_detail(
             status_code=404,
             detail="Recipe not found"
         )
-
+    
     if recipe.status != "public":
         raise HTTPException(
             status_code=403,
@@ -649,6 +649,107 @@ def update_recipe(
 
     return {
         "message": "Recipe updated"
+    }
+
+@router.get("/admin/detail/{recipe_id}")
+def admin_recipe_detail(
+    recipe_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only)
+):
+
+    recipe = db.query(Recipe).filter(
+        Recipe.id == recipe_id
+    ).first()
+
+    if not recipe:
+        raise HTTPException(
+            status_code=404,
+            detail="Recipe not found"
+        )
+
+    groups = db.query(
+        IngredientGroup
+    ).filter(
+        IngredientGroup.recipe_id == recipe.id
+    ).order_by(
+        IngredientGroup.sort_order
+    ).all()
+
+    ingredient_groups = []
+
+    for group in groups:
+
+        ingredients = db.query(
+            Ingredient
+        ).filter(
+            Ingredient.group_id == group.id
+        ).order_by(
+            Ingredient.sort_order
+        ).all()
+
+        ingredient_groups.append({
+            "id": group.id,
+            "name": group.name,
+            "ingredients": [
+                {
+                    "id": ingredient.id,
+                    "name": ingredient.name,
+                    "quantity": ingredient.quantity,
+                    "unit": ingredient.unit
+                }
+                for ingredient in ingredients
+            ]
+        })
+
+    steps_db = db.query(
+        RecipeStep
+    ).filter(
+        RecipeStep.recipe_id == recipe.id
+    ).order_by(
+        RecipeStep.step_number
+    ).all()
+
+    steps = []
+
+    for step in steps_db:
+
+        images = db.query(
+            RecipeStepImage
+        ).filter(
+            RecipeStepImage.step_id == step.id
+        ).order_by(
+            RecipeStepImage.sort_order
+        ).all()
+
+        steps.append({
+            "id": step.id,
+            "step_number": step.step_number,
+            "instruction": step.instruction,
+            "images": [
+                {
+                    "id": image.id,
+                    "image_url": image.image_url
+                }
+                for image in images
+            ]
+        })
+
+    return {
+        "id": recipe.id,
+        "user_id": recipe.user_id,
+        "category_id": recipe.category_id,
+        "title": recipe.title,
+        "description": recipe.description,
+        "cook_time": recipe.cook_time,
+        "servings": recipe.servings,
+        "estimated_cost": recipe.estimated_cost,
+        "contains_pork": recipe.contains_pork,
+        "contains_alcohol": recipe.contains_alcohol,
+        "cover_image": recipe.cover_image,
+        "status": recipe.status,
+        "ingredient_groups": ingredient_groups,
+        "steps": steps
     }
 
 @router.put("/{recipe_id}/submit")

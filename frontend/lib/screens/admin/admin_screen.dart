@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'admin_dashboard_screen.dart';
+import 'admin_pending_screen.dart';
+import '../profile/profile_screen.dart';
 import '../../providers/recipe_provider.dart';
-
-import 'admin_recipe_detail_screen.dart';
-
-import '../../providers/auth_provider.dart';
-
-import '../login/login_screen.dart';
+import '../recipe/my_recipe_screen.dart';
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({super.key});
@@ -17,215 +15,108 @@ class AdminScreen extends StatefulWidget {
 }
 
 class _AdminScreenState extends State<AdminScreen> {
+  int _currentIndex = 0;
+
+  // Halaman khusus Admin
+  final List<Widget> _screens = [
+    const AdminDashboardScreen(),
+    const AdminPendingScreen(),
+    const MyRecipesScreen(),
+    const ProfileScreen(), // Kita gunakan ulang layar profil yang sudah cantik
+  ];
+
   @override
   void initState() {
     super.initState();
 
-    Future.microtask(() async {
-      print('LOAD ADMIN STATS');
-
-      await context.read<RecipeProvider>().loadAdminStatistics();
-
-      print('LOAD PENDING');
-
-      await context.read<RecipeProvider>().loadPendingRecipes();
+    Future.microtask(() {
+      context.read<RecipeProvider>().loadPendingRecipes();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Admin Panel'),
+      body: _screens[_currentIndex],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.orange,
+          unselectedItemColor: Colors.grey,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard_rounded),
+              label: 'Dashboard',
+            ),
 
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-
-            onPressed: () async {
-              final auth = context.read<AuthProvider>();
-
-              await auth.logout();
-
-              if (!context.mounted) return;
-
-              Navigator.pushAndRemoveUntil(
-                context,
-
-                MaterialPageRoute(builder: (_) => const LoginScreen()),
-
-                (route) => false,
-              );
-            },
-          ),
-        ],
-      ),
-
-      body: Consumer<RecipeProvider>(
-        builder: (context, provider, child) {
-          if (provider.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final stats = provider.adminStatistics;
-
-          if (stats == null) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-          return Column(
-            children: [
-              Row(
+            BottomNavigationBarItem(
+              icon: Stack(
                 children: [
-                  Expanded(
-                    child: dashboardCard('Users', stats.totalUsers.toString()),
-                  ),
+                  const Icon(Icons.pending_actions),
 
-                  Expanded(
-                    child: dashboardCard(
-                      'Recipes',
-                      stats.totalRecipes.toString(),
-                    ),
-                  ),
-                ],
-              ),
+                  if (context.watch<RecipeProvider>().pendingRecipes.isNotEmpty)
+                    Positioned(
+                      right: 0,
+                      top: 0,
 
-              Row(
-                children: [
-                  Expanded(
-                    child: dashboardCard(
-                      'Pending',
-                      stats.totalPending.toString(),
-                    ),
-                  ),
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
 
-                  Expanded(
-                    child: dashboardCard(
-                      'Public',
-                      stats.totalPublic.toString(),
-                    ),
-                  ),
-                ],
-              ),
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
 
-              dashboardCard('Rejected', stats.totalRejected.toString()),
+                        child: Text(
+                          context
+                              .watch<RecipeProvider>()
+                              .pendingRecipes
+                              .length
+                              .toString(),
 
-              Expanded(
-                child: ListView.builder(
-                  itemCount: provider.pendingRecipes.length,
-
-                  itemBuilder: (context, index) {
-                    final recipe = provider.pendingRecipes[index];
-
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                AdminRecipeDetailScreen(recipeId: recipe.id),
-                          ),
-                        );
-                      },
-
-                      child: Card(
-                        margin: const EdgeInsets.all(12),
-
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-
-                            children: [
-                              Text(
-                                recipe.title,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-
-                              const SizedBox(height: 8),
-
-                              Text('Status: ${recipe.status}'),
-
-                              const SizedBox(height: 12),
-
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        await provider.approveRecipe(recipe.id);
-                                        if (!context.mounted) return;
-
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Recipe approved'),
-                                          ),
-                                        );
-                                      },
-
-                                      child: const Text('Approve'),
-                                    ),
-                                  ),
-
-                                  const SizedBox(width: 12),
-
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        await provider.rejectRecipe(recipe.id);
-                                        if (!context.mounted) return;
-
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Recipe rejected'),
-                                          ),
-                                        );
-                                      },
-
-                                      child: const Text('Reject'),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                ],
               ),
-            ],
-          );
-        },
+
+              label: 'Persetujuan',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.restaurant_menu),
+              label: 'Resepku',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline_rounded),
+              label: 'Profil',
+            ),
+          ],
+        ),
       ),
     );
   }
-}
-
-Widget dashboardCard(String title, String value) {
-  return Card(
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Text(
-            value,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          Text(title),
-        ],
-      ),
-    ),
-  );
 }
