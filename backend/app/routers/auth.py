@@ -143,6 +143,45 @@ def admin_users(
         for user in users
     ]
 
+from app.models.recipe import Recipe
+@router.get("/admin/users/{user_id}")
+def admin_user_detail(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only)
+):
+
+    user = db.query(User).filter(
+        User.id == user_id
+    ).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
+    recipes = db.query(Recipe).filter(
+        Recipe.user_id == user.id
+    ).all()
+
+    return {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "role": user.role,
+        "is_active": user.is_active,
+
+        "recipes": [
+            {
+                "id": recipe.id,
+                "title": recipe.title,
+                "status": recipe.status
+            }
+            for recipe in recipes
+        ]
+    }
+
 @router.put("/admin/users/{user_id}/deactivate")
 def deactivate_user(
     user_id: int,

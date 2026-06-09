@@ -50,25 +50,25 @@ INSERT INTO categories (id, NAME) VALUES
 -- =========================
 -- Resep dari User 1 (Admin)
 INSERT INTO recipes (id, user_id, category_id, title, DESCRIPTION, cook_time, servings, estimated_cost, contains_pork, contains_alcohol, cover_image, STATUS) VALUES
-(1, 1, 1, 'Nasi Goreng Spesial Dhaharan', 'Nasi goreng khas nusantara dengan bumbu rahasia yang kaya rempah.', 20, 2, 25000, FALSE, FALSE, 'uploads/covers/nasgor.jpg', 'public'),
-(2, 1, 4, 'Sup Buntut Kuah Bening', 'Sup buntut daging sapi pilihan dengan kuah kaldu yang segar dan gurih.', 120, 4, 120000, FALSE, FALSE, 'uploads/covers/sup-buntut.jpg', 'public'),
-(3, 1, 6, 'Es Dawet Ayu Banjarnegara', 'Minuman tradisional manis segar dari tepung beras dan gula merah asli.', 45, 5, 30000, FALSE, FALSE, 'uploads/covers/es-dawet.jpg', 'public'),
-(4, 1, 5, 'Klepon Pandan Lumer', 'Jajanan pasar kenyal isi gula merah yang meledak di mulut.', 60, 10, 20000, FALSE, FALSE, 'uploads/covers/klepon.jpg', 'public'),
-(5, 1, 10, 'Sate Lilit Ayam Khas Bali', 'Sate lilit dengan lilitan serai yang wangi menggugah selera.', 40, 4, 45000, FALSE, FALSE, 'uploads/covers/sate-lilit.jpg', 'public'),
+(1, 1, 1, 'Nasi Goreng Spesial Dhaharan', 'Nasi goreng khas nusantara dengan bumbu rahasia yang kaya rempah.', 20, 2, 25000, FALSE, FALSE, '/uploads/covers/nasigoreng.jpg', 'public'),
+(2, 1, 4, 'Sup Buntut Kuah Bening', 'Sup buntut daging sapi pilihan dengan kuah kaldu yang segar dan gurih.', 120, 4, 120000, FALSE, FALSE, '/uploads/covers/sop buntut.jpg', 'public'),
+(3, 1, 6, 'Es Dawet Ayu Banjarnegara', 'Minuman tradisional manis segar dari tepung beras dan gula merah asli.', 45, 5, 30000, FALSE, FALSE, '/uploads/covers/esdawet.jpg', 'public'),
+(4, 1, 5, 'Klepon Pandan Lumer', 'Jajanan pasar kenyal isi gula merah yang meledak di mulut.', 60, 10, 20000, FALSE, FALSE, '/uploads/covers/klepon.jpg', 'public'),
+(5, 1, 10, 'Sate Lilit Ayam Khas Bali', 'Sate lilit dengan lilitan serai yang wangi menggugah selera.', 40, 4, 45000, FALSE, FALSE, '/uploads/covers/satelilit.jpg', 'public'),
 
 -- Resep dari User 2 (Chef Budi)
-(6, 2, 9, 'Rendang Daging Sapi Empuk', 'Resep rendang asli Minang yang dimasak perlahan hingga bumbu meresap sempurna.', 180, 8, 150000, FALSE, FALSE, 'uploads/covers/rendang.jpg', 'public'),
-(7, 2, 7, 'Udang Bakar Madu Spesial', 'Udang segar ukuran besar dibakar dengan olesan madu dan rempah.', 30, 3, 85000, FALSE, FALSE, 'uploads/covers/udang-bakar.jpg', 'public'),
-(8, 2, 11, 'Mie Goreng Jawa Nyemek', 'Mie goreng dengan sedikit kuah kental rasa manis gurih khas Jawa.', 25, 2, 20000, FALSE, FALSE, 'uploads/covers/mie-nyemek.jpg', 'public'),
-(9, 2, 12, 'Sambal Matah Segar', 'Sambal mentah khas Bali yang sangat cocok disajikan dengan ikan atau ayam.', 10, 4, 15000, FALSE, FALSE, 'uploads/covers/sambal-matah.jpg', 'public'),
-(10, 2, 1, 'Nasi Bakar Cumi Asin', 'Nasi gurih yang dibungkus daun pisang berisi tumisan cumi asin pedas.', 50, 3, 50000, FALSE, FALSE, 'uploads/covers/nasi-bakar.jpg', 'public'),
+(6, 2, 9, 'Rendang Daging Sapi Empuk', 'Resep rendang asli Minang yang dimasak perlahan hingga bumbu meresap sempurna.', 180, 8, 150000, FALSE, FALSE, '/uploads/covers/rendang.jpg', 'public'),
+(7, 2, 7, 'Udang Bakar Madu Spesial', 'Udang segar ukuran besar dibakar dengan olesan madu dan rempah.', 30, 3, 85000, FALSE, FALSE, '/uploads/covers/udang.jpg', 'public'),
+(8, 2, 11, 'Mie Goreng Jawa Nyemek', 'Mie goreng dengan sedikit kuah kental rasa manis gurih khas Jawa.', 25, 2, 20000, FALSE, FALSE, '/uploads/covers/mienymek.jpg', 'public'),
+(9, 2, 12, 'Sambal Matah Segar', 'Sambal mentah khas Bali yang sangat cocok disajikan dengan ikan atau ayam.', 10, 4, 15000, FALSE, FALSE, '/uploads/covers/sambalmatah.jpg', 'public'),
+(10, 2, 1, 'Nasi Bakar Cumi Asin', 'Nasi gurih yang dibungkus daun pisang berisi tumisan cumi asin pedas.', 50, 3, 50000, FALSE, FALSE, '/uploads/covers/nasbakcumi.jpg', 'public'),
 
 -- Resep dari User 3 (Ibu Siti)
-(11, 3, 8, 'Sayur Asem Sunda Segar', 'Sayur asem bening dengan isian melimpah, cocok disantap siang hari.', 30, 5, 25000, FALSE, FALSE, 'uploads/covers/sayur-asem.jpg', 'public'),
-(12, 3, 3, 'Puding Coklat Vla Vanila', 'Puding lembut rasa coklat pekat disiram dengan vla vanila buatan sendiri.', 60, 8, 40000, FALSE, FALSE, 'uploads/covers/puding-coklat.jpg', 'public'),
-(13, 3, 4, 'Soto Ayam Lamongan dengan Koya', 'Soto ayam berkuah kuning gurih ditambah taburan koya kerupuk udang.', 90, 6, 65000, FALSE, FALSE, 'uploads/covers/soto-ayam.jpg', 'public'),
-(14, 3, 10, 'Ayam Masak Ang Ciu', 'Olahan ayam ala Chinese food dengan kuah jahe dan ang ciu yang menghangatkan.', 45, 4, 70000, FALSE, TRUE, 'uploads/covers/ayam-angciu.jpg', 'public'),
-(15, 3, 1, 'Babi Panggang Karo (BPK)', 'Babi panggang khas Batak Karo lengkap dengan bumbu darah dan kincong.', 120, 5, 150000, TRUE, FALSE, 'uploads/covers/bpk-karo.jpg', 'public');
+(11, 3, 8, 'Sayur Asem Sunda Segar', 'Sayur asem bening dengan isian melimpah, cocok disantap siang hari.', 30, 5, 25000, FALSE, FALSE, '/uploads/covers/sayurasem.jpg', 'public'),
+(12, 3, 3, 'Puding Coklat Vla Vanila', 'Puding lembut rasa coklat pekat disiram dengan vla vanila buatan sendiri.', 60, 8, 40000, FALSE, FALSE, '/uploads/covers/puding.jpg', 'public'),
+(13, 3, 4, 'Soto Ayam Lamongan dengan Koya', 'Soto ayam berkuah kuning gurih ditambah taburan koya kerupuk udang.', 90, 6, 65000, FALSE, FALSE, '/uploads/covers/soto.jpg', 'public'),
+(14, 3, 10, 'Ayam Masak Ang Ciu', 'Olahan ayam ala Chinese food dengan kuah jahe dan ang ciu yang menghangatkan.', 45, 4, 70000, FALSE, TRUE, '/uploads/covers/ayamangciu.jpg', 'public'),
+(15, 3, 1, 'Babi Panggang Karo (BPK)', 'Babi panggang khas Batak Karo lengkap dengan bumbu darah dan kincong.', 120, 5, 150000, TRUE, FALSE, '/uploads/covers/babi.jpg', 'public');
 
 
 -- =========================
@@ -255,25 +255,25 @@ INSERT INTO recipe_steps (id, recipe_id, step_number, instruction) VALUES
 -- =========================
 INSERT INTO recipe_step_images (step_id, image_url, sort_order) VALUES
 -- Nasi Goreng Step 1 (Menumis)
-(1, 'uploads/steps/nasgor-tumis.jpg', 1),
+(1, '/uploads/steps/nasgor-tumis.jpg', 1),
 -- Nasi Goreng Step 3 (Mencampur Nasi)
-(3, 'uploads/steps/nasgor-campur.jpg', 1),
+(3, '/uploads/steps/nasgor-campur.jpg', 1),
 
 -- Sup Buntut Step 1 (Presto)
-(5, 'uploads/steps/supbuntut-presto.jpg', 1),
+(5, '/uploads/steps/supbuntut-presto.jpg', 1),
 
 -- Klepon Step 2 (Mengisi gula)
-(12, 'uploads/steps/klepon-isi.jpg', 1),
-(12, 'uploads/steps/klepon-bulat.jpg', 2), -- 2 gambar di satu step
+(12, '/uploads/steps/klepon-isi.jpg', 1),
+(12, '/uploads/steps/klepon-bulat.jpg', 2), -- 2 gambar di satu step
 
 -- Rendang Step 2 (Aduk daging di santan)
-(18, 'uploads/steps/rendang-masak.jpg', 1),
+(18, '/uploads/steps/rendang-masak.jpg', 1),
 
 -- Udang Bakar Step 3 (Bakar)
-(22, 'uploads/steps/udang-bakar-proses.jpg', 1),
+(22, '/uploads/steps/udang-bakar-proses.jpg', 1),
 
 -- Nasi Bakar Step 3 (Bungkus & Bakar)
-(31, 'uploads/steps/nasibakar-bungkus.jpg', 1),
-(31, 'uploads/steps/nasibakar-panggang.jpg', 2);
+(31, '/uploads/steps/nasibakar-bungkus.jpg', 1),
+(31, '/uploads/steps/nasibakar-panggang.jpg', 2);
 
 -- Selesai

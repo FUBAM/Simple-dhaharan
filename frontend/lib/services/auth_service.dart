@@ -39,4 +39,8 @@ class AuthService {
   Future<Response> updateAccount(Map<String, dynamic> data) async {
     return await ApiService.dio.put('/users/account', data: data);
   }
+
+  Future<Response> getUserDetail(int userId) async {
+    return await ApiService.dio.get('/admin/users/$userId');
+  }
 }

@@ -28,6 +28,7 @@ from app.models.recipe_step_image import RecipeStepImage
 from sqlalchemy import delete
 import os
 
+from app.routers import users
 from app.schemas.recipe import RecipeCreate
 
 from app.dependencies import (
@@ -937,3 +938,74 @@ def rejected_recipes(
         }
         for recipe in recipes
     ]
+
+@router.get("/admin/users")
+def admin_users(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only)
+):
+    return [
+        {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "role": user.role
+        }
+        for user in users
+    ]
+
+@router.get("/admin/users/{user_id}")
+def admin_user_detail(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only)
+):
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User tidak ditemukan")
+
+    {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+
+        "recipes": [
+            {
+                "id": recipe.id,
+                "title": recipe.title,
+                "status": recipe.status
+            }
+        ]
+    }
+    return {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "recipes": [ ... ]
+    }
+
+@router.put("/admin/{recipe_id}/private")
+def private_recipe(
+    recipe_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only)
+):
+
+    recipe = db.query(Recipe).filter(
+        Recipe.id == recipe_id
+    ).first()
+
+    if not recipe:
+        raise HTTPException(
+            status_code=404,
+            detail="Recipe not found"
+        )
+
+    recipe.status = "private"
+
+    db.commit()
+
+    return {
+        "message": "Recipe set to private"
+    }

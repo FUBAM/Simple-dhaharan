@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/recipe_provider.dart';
+// TODO: Jangan lupa import halaman AdminUsersScreen jika file-nya ada di folder yang sama
+import 'admin_users_screen.dart';
+import 'admin_all_recipes_screen.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -46,7 +49,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 children: [
                   const Text(
                     'Ringkasan Data',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   GridView.count(
@@ -56,11 +63,45 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      // Variabel sudah disesuaikan dengan AdminStatisticsModel Anda
-                      _buildStatCard('Total User', '${stats.totalUsers}', Icons.people_alt_rounded, Colors.blue),
-                      _buildStatCard('Semua Resep', '${stats.totalRecipes}', Icons.restaurant_menu_rounded, Colors.orange),
-                      _buildStatCard('Menunggu', '${stats.totalPending}', Icons.pending_actions_rounded, Colors.amber),
-                      _buildStatCard('Ditolak', '${stats.totalRejected}', Icons.cancel_presentation_rounded, Colors.red),
+                      // KARTU TOTAL USER: Ditambahkan aksi onTap sesuai instruksi
+                      _buildStatCard(
+                        'Total User',
+                        '${stats.totalUsers}',
+                        Icons.people_alt_rounded,
+                        Colors.blue,
+                        onTap: () {
+                          // Pastikan file AdminUsersScreen sudah Anda buat!
+                          // Jika belum, beri komentar pada dua baris Navigator di bawah ini agar tidak error
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const AdminUsersScreen(),
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Menuju Halaman Admin Users...'),
+                            ),
+                          );
+                        },
+                      ),
+
+                      // KARTU LAINNYA (Tanpa aksi klik)
+                      _buildStatCard(
+                        'Semua Resep',
+                        '${stats.totalRecipes}',
+                        Icons.restaurant_menu_rounded,
+                        Colors.orange,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+
+                            MaterialPageRoute(
+                              builder: (_) => const AdminAllRecipesScreen(),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ],
@@ -69,43 +110,63 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  Widget _buildStatCard(String title, String count, IconData icon, Color color) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
+  // FUNGSI BUILDER: Ditambahkan parameter {VoidCallback? onTap}
+  Widget _buildStatCard(
+    String title,
+    String count,
+    IconData icon,
+    Color color, {
+    VoidCallback? onTap,
+  }) {
+    // Dibungkus dengan InkWell (atau GestureDetector) agar bisa diklik
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
               color: color.withOpacity(0.1),
-              shape: BoxShape.circle,
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-            child: Icon(icon, color: color, size: 28),
-          ),
-          const Spacer(),
-          Text(
-            count,
-            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            style: TextStyle(fontSize: 14, color: Colors.grey[600], fontWeight: FontWeight.w500),
-          ),
-        ],
+          ],
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: color, size: 28),
+            ),
+            const Spacer(),
+            Text(
+              count,
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

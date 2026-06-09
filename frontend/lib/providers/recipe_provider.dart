@@ -8,6 +8,7 @@ import '../models/category_model.dart';
 import '../services/upload_service.dart';
 import '../models/admin_recipe_model.dart';
 import '../models/admin_statistics_model.dart';
+import '../models/admin_user_model.dart';
 
 class RecipeProvider extends ChangeNotifier {
   final RecipeService _service = RecipeService();
@@ -18,6 +19,7 @@ class RecipeProvider extends ChangeNotifier {
   List<CategoryModel> categories = [];
   List<AdminRecipeModel> pendingRecipes = [];
   List<AdminRecipeModel> rejectedRecipes = [];
+  List<AdminUserModel> users = [];
 
   AdminStatisticsModel? adminStatistics;
   RecipeDetailModel? selectedRecipe;
@@ -227,6 +229,26 @@ class RecipeProvider extends ChangeNotifier {
     rejectedRecipes = (response.data as List)
         .map((e) => AdminRecipeModel.fromJson(e))
         .toList();
+
+    notifyListeners();
+  }
+
+  Future<void> loadUsers() async {
+    final response = await _service.getUsers();
+
+    users = (response.data as List)
+        .map((e) => AdminUserModel.fromJson(e))
+        .toList();
+
+    notifyListeners();
+  }
+
+  Future<void> privateRecipe(int recipeId) async {
+    await _service.privateRecipe(recipeId);
+
+    await loadPendingRecipes();
+
+    await loadRejectedRecipes();
 
     notifyListeners();
   }

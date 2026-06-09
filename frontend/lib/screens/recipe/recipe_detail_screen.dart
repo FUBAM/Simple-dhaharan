@@ -164,6 +164,29 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
               },
               icon: const Icon(Icons.edit_outlined, color: Colors.orange),
             ),
+          if (widget.isAdmin)
+            PopupMenuButton<String>(
+              onSelected: (value) async {
+                if (value == 'private') {
+                  await context.read<RecipeProvider>().privateRecipe(recipe.id);
+
+                  if (!context.mounted) return;
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Recipe set to private')),
+                  );
+
+                  Navigator.pop(context, true);
+                }
+              },
+
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'private',
+                  child: Text('Set Private'),
+                ),
+              ],
+            ),
         ],
       ),
       body: ListView(

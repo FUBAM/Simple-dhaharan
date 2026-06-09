@@ -81,4 +81,20 @@ class RecipeService {
   Future<Response> getRejectedRecipes() async {
     return await ApiService.dio.get('/recipes/admin/rejected');
   }
+
+  Future<Response> getUsers() async {
+    return await ApiService.dio.get('/auth/admin/users');
+  }
+
+  Future<Response> getUserDetail(int userId) async {
+    return await ApiService.dio.get('/auth/admin/users/$userId');
+  }
+
+  Future<Response> getAllRecipes() async {
+    return await ApiService.dio.get('/recipes/admin/all');
+  }
+
+  Future<Response> privateRecipe(int recipeId) async {
+    return await ApiService.dio.put('/recipes/admin/$recipeId/private');
+  }
 }
