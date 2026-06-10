@@ -15,9 +15,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   bool _obscurePassword = true;
   bool _isLoading = false;
+
+  // Mengecek apakah ketiga form sudah terisi
+  bool get _isFormFilled =>
+      _nameController.text.trim().isNotEmpty &&
+      _emailController.text.trim().isNotEmpty &&
+      _passwordController.text.isNotEmpty;
 
   Future<void> _handleRegister() async {
     if (!_formKey.currentState!.validate()) return;
@@ -25,23 +31,71 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() => _isLoading = true);
 
     final success = await context.read<AuthProvider>().register(
-          name: _nameController.text.trim(),
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        );
+      name: _nameController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+    );
 
     setState(() => _isLoading = false);
 
     if (!mounted) return;
 
     if (success) {
+      // Notifikasi Register Berhasil
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registrasi berhasil! Silakan login.'), backgroundColor: Colors.green),
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.check_circle_rounded, color: Colors.white),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Registrasi berhasil! Silakan login.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.green.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+          elevation: 6,
+        ),
       );
-      Navigator.pop(context); // Kembali ke halaman Login
+      Navigator.pop(context);
     } else {
+      // Notifikasi Register Gagal
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registrasi gagal. Email mungkin sudah terdaftar.'), backgroundColor: Colors.red),
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.error_rounded, color: Colors.white),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Registrasi gagal. Email mungkin sudah terdaftar.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.red.shade500,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+          elevation: 6,
+        ),
       );
     }
   }
@@ -61,7 +115,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
             child: Form(
               key: _formKey,
               child: Column(
@@ -79,10 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 8),
                   Text(
                     'Daftar untuk menyimpan dan membagikan resep favoritmu.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey.shade600,
-                    ),
+                    style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
                   ),
                   const SizedBox(height: 40),
 
@@ -90,13 +144,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _nameController,
                     keyboardType: TextInputType.name,
+                    onChanged: (value) => setState(() {}),
                     decoration: const InputDecoration(
                       labelText: 'Nama Lengkap',
                       hintText: 'Masukkan nama Anda',
-                      prefixIcon: Icon(Icons.person_outline, color: Colors.grey),
+                      prefixIcon: Icon(
+                        Icons.person_outline,
+                        color: Colors.grey,
+                      ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Nama tidak boleh kosong';
+                      if (value == null || value.isEmpty)
+                        return 'Nama tidak boleh kosong';
                       return null;
                     },
                   ),
@@ -106,14 +165,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
+                    onChanged: (value) => setState(() {}),
                     decoration: const InputDecoration(
                       labelText: 'Email',
                       hintText: 'Masukkan email Anda',
-                      prefixIcon: Icon(Icons.email_outlined, color: Colors.grey),
+                      prefixIcon: Icon(
+                        Icons.email_outlined,
+                        color: Colors.grey,
+                      ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Email tidak boleh kosong';
-                      if (!value.contains('@')) return 'Format email tidak valid';
+                      if (value == null || value.isEmpty)
+                        return 'Email tidak boleh kosong';
+                      if (!value.contains('@'))
+                        return 'Format email tidak valid';
                       return null;
                     },
                   ),
@@ -123,40 +188,69 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _passwordController,
                     obscureText: _obscurePassword,
+                    onChanged: (value) => setState(() {}),
                     decoration: InputDecoration(
                       labelText: 'Password',
                       hintText: 'Buat password',
-                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                      prefixIcon: const Icon(
+                        Icons.lock_outline,
+                        color: Colors.grey,
+                      ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                          _obscurePassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
                           color: Colors.grey,
                         ),
-                        onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                        onPressed: () => setState(
+                          () => _obscurePassword = !_obscurePassword,
+                        ),
                       ),
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Password tidak boleh kosong';
-                      if (value.length < 6) return 'Password minimal 6 karakter';
+                      if (value == null || value.isEmpty)
+                        return 'Password tidak boleh kosong';
+                      if (value.length < 6)
+                        return 'Password minimal 6 karakter';
                       return null;
                     },
                   ),
                   const SizedBox(height: 40),
 
-                  // Tombol Register
+                  // Tombol Register (Dinamis)
                   SizedBox(
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _isLoading ? null : _handleRegister,
+                      onPressed: (_isLoading || !_isFormFilled)
+                          ? null
+                          : _handleRegister,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange, // Warna saat aktif
+                        disabledBackgroundColor:
+                            Colors.orange.shade100, // Warna saat mati
+                        foregroundColor: Colors.white,
+                        disabledForegroundColor: Colors.white,
+                        elevation: _isFormFilled ? 4 : 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
                       child: _isLoading
                           ? const SizedBox(
                               height: 24,
                               width: 24,
-                              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 3,
+                              ),
                             )
                           : const Text(
                               'DAFTAR SEKARANG',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                     ),
                   ),

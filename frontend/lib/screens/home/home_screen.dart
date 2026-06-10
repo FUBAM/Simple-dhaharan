@@ -69,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
-                          // Logika Tombol Login vs Avatar Profil
                           if (user != null)
                             CircleAvatar(
                               backgroundColor: Colors.orange.shade100,
@@ -98,8 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 24),
                       
-                      // Fake Search Bar
-                      // Kotak Pencarian yang Bisa Diklik
                       GestureDetector(
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchScreen()));

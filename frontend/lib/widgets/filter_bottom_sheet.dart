@@ -45,14 +45,23 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Filter Resep', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(context)),
+              const Text(
+                'Filter Resep',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.pop(context),
+              ),
             ],
           ),
           const SizedBox(height: 16),
-          
+
           // Filter Waktu
-          const Text('Waktu Memasak (Maksimal)', style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            'Waktu Memasak (Maksimal)',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           Row(
             children: [
               Expanded(
@@ -66,13 +75,19 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   onChanged: (val) => setState(() => _maxTime = val.toInt()),
                 ),
               ),
-              Text(_maxTime != null ? '$_maxTime Mnt' : 'Bebas', style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                _maxTime != null ? '$_maxTime Mnt' : 'Bebas',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
           const SizedBox(height: 16),
 
           // Filter Porsi
-          const Text('Jumlah Porsi', style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            'Jumlah Porsi',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
           SizedBox(
             height: 40,
@@ -88,7 +103,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     label: Text('$porsi'),
                     selected: isSelected,
                     selectedColor: Colors.orange,
-                    labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.black87),
+                    labelStyle: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black87,
+                    ),
                     onSelected: (selected) {
                       setState(() => _servings = selected ? porsi : null);
                     },
@@ -100,7 +117,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           const SizedBox(height: 24),
 
           // Sorting
-          const Text('Urutkan Berdasarkan', style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            'Urutkan Berdasarkan',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           Row(
             children: [
               Expanded(
@@ -139,7 +159,29 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   'sort': _sort,
                 });
               },
-              child: const Text('TERAPKAN FILTER', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              // ==========================================
+              // TAMBAHKAN KODE STYLE INI
+              // ==========================================
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    Colors.orange, // Membuat tombol berwarna oranye terang
+                foregroundColor: Colors
+                    .white, // Memastikan efek klik dan teks berwarna putih
+                elevation: 2, // Memberikan sedikit bayangan
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    25,
+                  ), // Membuat ujung tombol lebih melengkung
+                ),
+              ),
+              // ==========================================
+              child: const Text(
+                'TERAPKAN FILTER',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ],

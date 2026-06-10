@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../models/admin_recipe_model.dart';
 import '../../services/recipe_service.dart';
 import '../recipe/recipe_detail_screen.dart';
-// IMPORT INI YANG SEBELUMNYA HILANG:
 import '../../core/constants/api_constants.dart';
 
 class AdminAllRecipesScreen extends StatefulWidget {
@@ -65,7 +64,6 @@ class _AdminAllRecipesScreenState extends State<AdminAllRecipesScreen> {
       ),
       body: Column(
         children: [
-          // Bagian Pencarian & Filter
           Container(
             color: Colors.white,
             padding: const EdgeInsets.all(16),
@@ -119,7 +117,7 @@ class _AdminAllRecipesScreenState extends State<AdminAllRecipesScreen> {
                       ],
                       onChanged: (value) {
                         selectedStatus = value!;
-                        applyFilter(''); // Terapkan filter ulang
+                        applyFilter('');
                       },
                     ),
                   ),
@@ -128,7 +126,6 @@ class _AdminAllRecipesScreenState extends State<AdminAllRecipesScreen> {
             ),
           ),
 
-          // Daftar Resep
           Expanded(
             child: filteredRecipes.isEmpty
                 ? const Center(
@@ -143,7 +140,6 @@ class _AdminAllRecipesScreenState extends State<AdminAllRecipesScreen> {
                     itemBuilder: (context, index) {
                       final recipe = filteredRecipes[index];
 
-                      // KATA 'return' INI SANGAT PENTING DAN SEBELUMNYA HILANG
                       return Card(
                         margin: const EdgeInsets.only(bottom: 12),
                         shape: RoundedRectangleBorder(
@@ -157,7 +153,6 @@ class _AdminAllRecipesScreenState extends State<AdminAllRecipesScreen> {
                             borderRadius: BorderRadius.circular(8),
                             child: recipe.coverImage != null
                                 ? Image.network(
-                                    // Menggunakan ApiConstants sesuai standar aplikasi kita
                                     '${ApiConstants.baseUrl}${recipe.coverImage}',
                                     width: 60,
                                     height: 60,
@@ -221,7 +216,7 @@ class _AdminAllRecipesScreenState extends State<AdminAllRecipesScreen> {
                             if (result == true) {
                               await loadRecipes();
                             }
-                          },
+                          }, 
                         ),
                       );
                     },

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/recipe_provider.dart';
-// TODO: Jangan lupa import halaman AdminUsersScreen jika file-nya ada di folder yang sama
 import 'admin_users_screen.dart';
 import 'admin_all_recipes_screen.dart';
 
@@ -63,30 +62,21 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      // KARTU TOTAL USER: Ditambahkan aksi onTap sesuai instruksi
                       _buildStatCard(
                         'Total User',
                         '${stats.totalUsers}',
                         Icons.people_alt_rounded,
                         Colors.blue,
                         onTap: () {
-                          // Pastikan file AdminUsersScreen sudah Anda buat!
-                          // Jika belum, beri komentar pada dua baris Navigator di bawah ini agar tidak error
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (_) => const AdminUsersScreen(),
                             ),
                           );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Menuju Halaman Admin Users...'),
-                            ),
-                          );
                         },
                       ),
 
-                      // KARTU LAINNYA (Tanpa aksi klik)
                       _buildStatCard(
                         'Semua Resep',
                         '${stats.totalRecipes}',

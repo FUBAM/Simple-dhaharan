@@ -44,11 +44,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (!mounted) return;
 
     if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profil berhasil diperbarui!'), backgroundColor: Colors.green));
+      _showSnackBar('Profil berhasil diperbarui!', Colors.green.shade600, Icons.check_circle_rounded);
       Navigator.pop(context);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Gagal memperbarui profil.'), backgroundColor: Colors.red));
+      _showSnackBar('Gagal memperbarui profil.', Colors.red.shade600, Icons.error_rounded);
     }
+  }
+
+  void _showSnackBar(String message, Color color, IconData icon) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(icon, color: Colors.white),
+            const SizedBox(width: 12),
+            Expanded(child: Text(message, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
+          ],
+        ),
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+        elevation: 6,
+      ),
+    );
   }
 
   @override
@@ -56,7 +75,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Edit Profil'),
+        title: const Text('Edit Profil', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black87),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -75,9 +97,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               height: 54,
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _submitUpdate,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                ),
                 child: _isLoading 
                     ? const CircularProgressIndicator(color: Colors.white) 
-                    : const Text('SIMPAN PROFIL', style: TextStyle(fontSize: 16)),
+                    : const Text('SIMPAN PROFIL', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               ),
             )
           ],
@@ -93,6 +121,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
+        filled: true,
+        fillColor: Colors.grey.shade50,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.orange, width: 2)),
       ),
     );
   }
